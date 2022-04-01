@@ -9,7 +9,7 @@ export interface ICell {
 }
 
 export interface ISettings {
-  level: number;
+  level: string;
   cellsToBeFilled: number;
   rows: number;
   cols: number;
