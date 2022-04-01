@@ -1,0 +1,22 @@
+.topNumbers {
+  grid-area: topNumbers;
+  display: flex;
+  flex-direction: row;
+}
+
+.topNumberColumn {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.topNumberColumn:nth-child(odd){
+  background-color: #a0a0a0;
+}
+
+.topNumberColumn:nth-child(even){
+  background-color: #c0c0c0;
+}
+
+.number {
+  composes: number from './number.css';
+}
