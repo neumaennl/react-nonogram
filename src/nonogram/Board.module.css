@@ -1,0 +1,6 @@
+.board {
+  grid-area: board;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}

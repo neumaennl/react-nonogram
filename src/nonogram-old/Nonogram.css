@@ -1,0 +1,97 @@
+body {
+  background-color: gray;
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 2fr;
+  grid-template-areas:
+    "previewAndTimer topNumbers"
+    "sideNumbers board";
+}
+
+.previewAndTimer {
+  grid-area: previewAndTimer;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.topNumbers {
+  grid-area: topNumbers;
+  display: flex;
+  flex-direction: row;
+}
+
+.topNumberColumn {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.topNumberColumn:nth-child(odd){
+  background-color: #a0a0a0;
+}
+
+.topNumberColumn:nth-child(even){
+  background-color: #c0c0c0;
+}
+
+.number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sideNumbers {
+  grid-area: sideNumbers;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideNumberRow {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.sideNumberRow:nth-child(odd){
+  background-color: #a0a0a0;
+}
+
+.sideNumberRow:nth-child(even){
+  background-color: #c0c0c0;
+}
+
+.board {
+  grid-area: board;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell {
+  border-radius: 30%;
+  border: none;
+  outline: none;
+}
