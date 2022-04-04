@@ -1,27 +1,26 @@
 import React from 'react';
 import styles from './Board.module.css';
 import Cell from './Cell';
-import { ICell, GameState, ISettings, CellMap } from './types';
+import { ICell, GameState, ILevel } from './types';
 
 interface IProps {
-  cells: CellMap;
   gameState: GameState;
-  settings: ISettings;
+  level: ILevel;
   onMarkFilled: (cell: ICell) => void;
   onMarkEmpty: (cell: ICell) => void;
   onRemoveMark: (cell: ICell) => void;
 }
 
-function Board({cells, gameState, settings, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
+function Board({gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
 
   return (
-    <div className={styles.board} style={{ gridTemplateColumns: `repeat(${settings.cols}, 1fr)` }}>
-      {Array.from(cells.values()).map((cell) => (
+    <div className={styles.board} style={{ gridTemplateColumns: `repeat(${level.cols}, 1fr)` }}>
+      {Array.from(level.cells.values()).map((cell) => (
         <Cell
           key={cell.id}
           cell={cell}
           gameState={gameState}
-          settings={settings}
+          level={level}
           onMarkFilled={onMarkFilled}
           onMarkEmpty={onMarkEmpty}
           onRemoveMark={onRemoveMark}
