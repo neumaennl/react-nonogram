@@ -1,0 +1,22 @@
+.sideNumbers {
+  grid-area: sideNumbers;
+  display: flex;
+  flex-direction: column;
+}
+
+.sideNumberRow {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.sideNumberRow:nth-child(odd){
+  background-color: #a0a0a0;
+}
+
+.sideNumberRow:nth-child(even){
+  background-color: #c0c0c0;
+}
+
+.number {
+  composes: number from './number.css';
+}

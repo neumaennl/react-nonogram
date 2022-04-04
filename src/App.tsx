@@ -1,5 +1,6 @@
 import './App.css'
 import Board from './nonogram/Board';
+import SideNumbers from './nonogram/SideNumbers';
 import TopNumbers from './nonogram/TopNumbers';
 import { CellMark, GameState, ICell } from './nonogram/types';
 //import ProjectsPage from './projects/ProjectsPage';
@@ -20,10 +21,14 @@ function App() {
 
   return (
     <div>
-      <TopNumbers
-        cells={cellMap}
-        settings={settings}
-      />
+    <TopNumbers
+      cells={cellMap}
+      settings={settings}
+    />
+    <SideNumbers
+      cells={cellMap}
+      settings={settings}
+    />
       <Board
         cells={cellMap}
         gameState={GameState.Playing}
