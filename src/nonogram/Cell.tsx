@@ -1,17 +1,17 @@
 import React, {useCallback} from 'react';
-import {CellMark, GameState, ICell, ISettings} from './types';
+import {CellMark, GameState, ICell, ILevel} from './types';
 import styles from './Cell.module.css'
 
 interface IProps {
   cell: ICell;
   gameState: GameState;
-  settings: ISettings;
+  level: ILevel;
   onMarkFilled: (cell: ICell) => void;
   onMarkEmpty: (cell: ICell) => void;
   onRemoveMark: (cell: ICell) => void;
 }
 
-function Cell({cell, gameState, settings, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
+function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
   const isDisabled = gameState === GameState.Pause || gameState === GameState.GameOver;
 
   // Handlers
@@ -44,8 +44,8 @@ function Cell({cell, gameState, settings, onMarkFilled, onMarkEmpty, onRemoveMar
       onClick={handleClick}
       onContextMenu={handleContextMenuClick}
       style={{
-        width: `min(${100 / (settings.cols * 1.5)}vw, ${100 / (settings.rows * 1.5)}vh)`,
-        height: `min(${100 / (settings.cols * 1.5)}vw, ${100 / (settings.rows * 1.5)}vh)`,
+        width: `min(${100 / (level.cols * 1.5)}vw, ${100 / (level.rows * 1.5)}vh)`,
+        height: `min(${100 / (level.cols * 1.5)}vw, ${100 / (level.rows * 1.5)}vh)`,
         backgroundColor: cell.mark === CellMark.filled ? "black" : "white"
       }}
     >
