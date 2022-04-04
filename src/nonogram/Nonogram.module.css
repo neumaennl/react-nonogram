@@ -1,0 +1,37 @@
+.game {
+  background-color: gray;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 2fr;
+  grid-template-areas:
+    "previewAndTimer topNumbers"
+    "sideNumbers board";
+}
+
+.previewAndTimer {
+  grid-area: previewAndTimer;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}

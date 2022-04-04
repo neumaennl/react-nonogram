@@ -8,11 +8,16 @@ export interface ICell {
   mark: CellMark;
 }
 
-export interface ISettings {
-  level: string;
+export interface ILevel {
+  levelName: string;
+  description: string;
+  cells: CellMap;
   cellsToBeFilled: number;
+  cellsFilled: number;
   rows: number;
   cols: number;
+  setCells(cells: CellMap): void;
+  setCellsFilled(cellsFilled: number): void;
 }
 
 export enum CellMark {
