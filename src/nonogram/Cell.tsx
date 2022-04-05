@@ -16,7 +16,7 @@ function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}:
 
   // Handlers
   const handleClick = useCallback(() => {
-    if (cell.mark === CellMark.empty) {
+    if (cell.mark === CellMark.none) {
       onMarkFilled(cell);
     }
   }, [cell, onMarkFilled]);
