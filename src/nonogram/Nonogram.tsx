@@ -9,7 +9,7 @@ import useGameEnvironment from './GameEnvironmentHook';
 
 function Nonogram() {
 
-  const level = useGameEnvironment();
+  const { level, onMarkFilled, onMarkEmpty, onRemoveMark } = useGameEnvironment();
 
   return (
     <div className={styles.game}>
@@ -22,9 +22,9 @@ function Nonogram() {
         <Board
           gameState={GameState.Playing}
           level={level}
-          onMarkEmpty={() => null}
-          onMarkFilled={() => null}
-          onRemoveMark={() => null}
+          onMarkEmpty={onMarkEmpty}
+          onMarkFilled={onMarkFilled}
+          onRemoveMark={onRemoveMark}
         />
       </div>
       <div className={styles.buttons}>
