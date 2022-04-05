@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { coordsToKey } from "./helper";
+import { getLevelInfo } from "./levels";
 import { CellMap, CellMark, ILevel } from "./types";
 
 export default function useLevel(levelName: string): ILevel {
@@ -12,26 +13,9 @@ export default function useLevel(levelName: string): ILevel {
   const [rows, setRows] = useState(0);
   const [cols, setCols] = useState(0);
 
-  //TODO: get levels by level name
-  const levelText = `220224444422202
-200004444400002
-000004444400002
-200004444400002
-200004444400002
-444441111144444
-444441111144444
-444441111144444
-444441111144444
-444441111144444
-200004444400002
-200004444400002
-200004444400002
-000004444400002
-222224444422222
-Test level 10`;
-
   useEffect(() => {
-    let rowStrings = levelText.split("\n");
+    let levelInfo = getLevelInfo(levelName);
+    let tempDescripton = "";
     let error = false;
     let x = 0;
     let y = -1;
@@ -41,96 +25,100 @@ Test level 10`;
     let tempCellsToBeFilled = 0;
     let tempCellsAlreadyFilled = 0;
 
-    for (const row of rowStrings) {
-      y++;
-      if (row.match(/^[0-4]+/)) {
-        tempRows++;
-        if (tempCols === 0) {
-          tempCols = row.length;
-        } else {
-          if (tempCols !== row.length) {
-            error = true;
-            break;
-          }
-        }
-        x = -1;
-        for (const col of row) {
-          x++;
-          switch (col) {
-            case "0":
-              tempCells.set(
-                coordsToKey([x, y]),
-                {
-                  id: x + tempCols * y,
-                  coords: [x, y],
-                  fill: false,
-                  mark: CellMark.none
-                }
-              );
-              break;
-            case "1":
-              tempCells.set(
-                coordsToKey([x, y]),
-                {
-                  id: x + tempCols * y,
-                  coords: [x, y],
-                  fill: false,
-                  mark: CellMark.empty
-                }
-              );
-              break;
-            case "2":
-              tempCells.set(
-                coordsToKey([x, y]),
-                {
-                  id: x + tempCols * y,
-                  coords: [x, y],
-                  fill: true,
-                  mark: CellMark.none
-                }
-              );
-              tempCellsToBeFilled++;
-              break;
-            case "3":
-              tempCells.set(
-                coordsToKey([x, y]),
-                {
-                  id: x + tempCols * y,
-                  coords: [x, y],
-                  fill: true,
-                  mark: CellMark.empty
-                }
-              );
-              tempCellsToBeFilled++;
-              break;
-            case "4":
-              tempCells.set(
-                coordsToKey([x, y]),
-                {
-                  id: x + tempCols * y,
-                  coords: [x, y],
-                  fill: true,
-                  mark: CellMark.filled
-                }
-              );
-              tempCellsToBeFilled++;
-              tempCellsAlreadyFilled++;
-              break;
-            default:
+    if(levelInfo) {
+      tempDescripton = levelInfo.description;
+      let rowStrings = levelInfo.data.split("\n");
+      for (const row of rowStrings) {
+        y++;
+        if (row.match(/^[0-4]+$/)) {
+          tempRows++;
+          if (tempCols === 0) {
+            tempCols = row.length;
+          } else {
+            if (tempCols !== row.length) {
               error = true;
               break;
+            }
           }
+          x = -1;
+          for (const col of row) {
+            x++;
+            switch (col) {
+              case "0":
+                tempCells.set(
+                  coordsToKey([x, y]),
+                  {
+                    id: x + tempCols * y,
+                    coords: [x, y],
+                    fill: false,
+                    mark: CellMark.none
+                  }
+                );
+                break;
+              case "1":
+                tempCells.set(
+                  coordsToKey([x, y]),
+                  {
+                    id: x + tempCols * y,
+                    coords: [x, y],
+                    fill: false,
+                    mark: CellMark.empty
+                  }
+                );
+                break;
+              case "2":
+                tempCells.set(
+                  coordsToKey([x, y]),
+                  {
+                    id: x + tempCols * y,
+                    coords: [x, y],
+                    fill: true,
+                    mark: CellMark.none
+                  }
+                );
+                tempCellsToBeFilled++;
+                break;
+              case "3":
+                tempCells.set(
+                  coordsToKey([x, y]),
+                  {
+                    id: x + tempCols * y,
+                    coords: [x, y],
+                    fill: true,
+                    mark: CellMark.empty
+                  }
+                );
+                tempCellsToBeFilled++;
+                break;
+              case "4":
+                tempCells.set(
+                  coordsToKey([x, y]),
+                  {
+                    id: x + tempCols * y,
+                    coords: [x, y],
+                    fill: true,
+                    mark: CellMark.filled
+                  }
+                );
+                tempCellsToBeFilled++;
+                tempCellsAlreadyFilled++;
+                break;
+              default:
+                error = true;
+                break;
+            }
+          }
+        } else {
+          error = true;
+          break;
         }
-      } else if (tempRows !== 0 && row.length > 0) {
-        setDescription(row);
-        break;
-      } else {
-        error = true;
-        break;
       }
+    } else {
+      error = true;
     }
 
     if (error) {
+      tempDescripton = "Error loading level " + levelName;
       tempRows = 10;
       tempCols = 15;
       tempCells = new Map();
@@ -142,13 +130,14 @@ Test level 10`;
       }
     }
 
+    setDescription(tempDescripton);
     setRows(tempRows);
     setCols(tempCols);
     setCellsToBeFilled(tempCellsToBeFilled);
     setFilledCells(tempCellsAlreadyFilled);
 
     setCells(new Map(tempCells));
-  }, [levelName, levelText]);
+  }, [levelName]);
 
   return { levelName, description, cells, cellsFilled: filledCells, cellsToBeFilled, rows, cols, setCells, setCellsFilled: setFilledCells }
 }
