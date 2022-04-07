@@ -8,8 +8,8 @@ export default function useGameEnvironment() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [levelName, setLevelName] = useState(getLevelNames()[0]);
   const level = useLevel(levelName);
-  const { onMarkFilled, onMarkEmpty, onRemoveMark } = useGameLoop(level);
+  const { onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState } = useGameLoop(level);
 
-  return { level, onMarkFilled, onMarkEmpty, onRemoveMark };
+  return { level, onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState };
 
 }

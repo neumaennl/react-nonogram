@@ -30,5 +30,6 @@ export enum GameState {
   Idle = 'Idle',
   Playing = 'Playing',
   Pause = 'Pause',
+  Won = 'Won',
   GameOver = 'GameOver',
 }

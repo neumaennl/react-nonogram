@@ -25,7 +25,7 @@ export default function useLevel(levelName: string): ILevel {
     let tempCellsToBeFilled = 0;
     let tempCellsAlreadyFilled = 0;
 
-    if(levelInfo) {
+    if (levelInfo) {
       tempDescripton = levelInfo.description;
       let rowStrings = levelInfo.data.split("\n");
       for (const row of rowStrings) {
@@ -123,6 +123,7 @@ export default function useLevel(levelName: string): ILevel {
       tempCols = 15;
       tempCells = new Map();
       tempCellsToBeFilled = 0;
+      tempCellsAlreadyFilled = 0;
       for (y = 0; y < tempRows; y++) {
         for (x = 0; x < tempCols; x++) {
           tempCells.set(coordsToKey([x, y]), { id: x + tempCols * y, coords: [x, y], fill: false, mark: CellMark.none });
