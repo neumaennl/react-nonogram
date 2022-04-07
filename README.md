@@ -8,14 +8,11 @@ a nonogram game implemented in React with TypeScript
 [Try it!](https://neumaennl.github.io/react-nonogram)
 
 ## stuff left to do
-- timer
 - preview
-- display level name
-- penalty for mistakes
-- determination of game won/lost
 - level selection
 - pausing
 - quitting
+- dynamic penalty for mistakes (optional)
 - highlighting complete blocks in top/side numbers (optional)
 
 ## references

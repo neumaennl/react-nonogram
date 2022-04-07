@@ -1,5 +1,12 @@
-.game {
+.nonogram {
   background-color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.game {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -34,4 +41,16 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+
+.message {
+  display: block;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  background-color: gray;
+  color: white;
+  border-radius: 2vmin;
+  padding: 2vmin;
+  font-size: xx-large;
 }
