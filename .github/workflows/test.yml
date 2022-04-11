@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+    push:
+        branches:
+        - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+              node-version: '17'
+        - uses: actions/cache@v3
+          with:
+              path: ~/.npm
+              key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+              restore-keys: |
+                  ${{ runner.os }}-build-${{ env.cache-name }}-
+                  ${{ runner.os }}-build-
+                  ${{ runner.os }}-
+        - name: Install dependencies
+          run: npm install
+        - name: Test
+          run: npm test
