@@ -58,16 +58,26 @@ export default function useGameLoop(level: ILevel) {
 
   const onRemoveMark = useCallback(
     (clickedCell: ICell): void => {
-      clickedCell.mark = CellMark.none;
-      level.setCells(new Map(level.cells));
-    }, [level]
+      if (gameState === GameState.Playing || gameState === GameState.Idle) {
+        if (gameState === GameState.Idle) {
+          setGameState(GameState.Playing)
+        }
+        clickedCell.mark = CellMark.none;
+        level.setCells(new Map(level.cells));
+      }
+    }, [level, gameState]
   );
 
   const onMarkEmpty = useCallback(
     (clickedCell: ICell): void => {
-      clickedCell.mark = CellMark.empty;
-      level.setCells(new Map(level.cells));
-    }, [level]
+      if (gameState === GameState.Playing || gameState === GameState.Idle) {
+        if (gameState === GameState.Idle) {
+          setGameState(GameState.Playing)
+        }
+        clickedCell.mark = CellMark.empty;
+        level.setCells(new Map(level.cells));
+      }
+    }, [level, gameState]
   );
 
   return { onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState };
