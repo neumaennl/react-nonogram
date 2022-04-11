@@ -12,7 +12,7 @@ interface IProps {
 }
 
 function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
-  const isDisabled = gameState === GameState.Pause || gameState === GameState.GameOver;
+  const isDisabled = gameState === GameState.Pause || gameState === GameState.GameOver || gameState === GameState.Won;
 
   // Handlers
   const handleClick = useCallback(() => {
@@ -26,7 +26,7 @@ function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}:
       // Disable context menu
       event.preventDefault();
 
-      if (gameState === GameState.Playing && cell.mark !== CellMark.filled) {
+      if (cell.mark !== CellMark.filled) {
         if (cell.mark === CellMark.empty) {
           onRemoveMark(cell);
         } else {
@@ -34,7 +34,7 @@ function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}:
         }
       }
     },
-    [cell, onMarkEmpty, onRemoveMark, gameState],
+    [cell, onMarkEmpty, onRemoveMark],
   );
 
   return (
