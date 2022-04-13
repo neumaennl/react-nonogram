@@ -1,7 +1,7 @@
 # react-nonogram
-![CI/CD](https://github.com/neumaennl/react-nonogram/workflows/GitHub%20Pages/badge.svg)
-![CodeQL](https://github.com/neumaennl/react-nonogram/workflows/CodeQL/badge.svg)
-![Tests](https://github.com/neumaennl/react-nonogram/workflows/Tests/badge.svg)
+[![GitHub Pages](https://github.com/neumaennl/react-nonogram/actions/workflows/pages.yml/badge.svg)](https://github.com/neumaennl/react-nonogram/actions/workflows/pages.yml)
+[![CodeQL](https://github.com/neumaennl/react-nonogram/actions/workflows/codeql.yml/badge.svg)](https://github.com/neumaennl/react-nonogram/actions/workflows/codeql.yml)
+[![Tests](https://github.com/neumaennl/react-nonogram/workflows/Tests/badge.svg)](https://github.com/neumaennl/react-nonogram/actions/workflows/test.yml)
 [![GitHub license](https://img.shields.io/github/license/neumaennl/react-nonogram)](https://github.com/neumaennl/react-nonogram/blob/main/LICENSE)
 
 a nonogram game implemented in React with TypeScript
