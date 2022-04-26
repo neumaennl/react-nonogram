@@ -13,6 +13,7 @@ a nonogram game implemented in React with TypeScript
 - level selection
 - pausing
 - quitting
+- make this a proper PWA
 - dynamic penalty for mistakes (optional)
 - highlighting complete blocks in top/side numbers (optional)
 
