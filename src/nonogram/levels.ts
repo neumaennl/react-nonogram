@@ -1,3 +1,7 @@
+/* basic level repository
+ * Contains all levels in serialize form and functions to retrieve information about them.
+ */
+
 interface ILevelInfo {
   data: string;
   description: string;

@@ -8,7 +8,11 @@ import styles from './Nonogram.module.css';
 import useGameEnvironment from './GameEnvironmentHook';
 import Preview from './Preview';
 
-function Nonogram() {
+/**
+ * component that renders the whole game: the preview, the numbers that describe which cells to fill on the board,
+ * the board itself and the button descriptions.
+ */
+export default function Nonogram() {
 
   const { level, onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState } = useGameEnvironment();
 
@@ -53,5 +57,3 @@ function Nonogram() {
     </div>
   );
 }
-
-export default Nonogram;

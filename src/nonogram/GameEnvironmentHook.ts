@@ -3,6 +3,9 @@ import useGameLoop from './GameLoopHook';
 import useLevel from './LevelLoader';
 import { getLevelNames } from './levels';
 
+/**
+ * handles the game environment (e.g. current level).
+ */
 export default function useGameEnvironment() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

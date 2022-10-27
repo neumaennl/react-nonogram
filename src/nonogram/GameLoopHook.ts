@@ -3,10 +3,13 @@ import { formatSeconds } from './helper';
 import useInterval from './IntervalHook';
 import { CellMark, GameState, ICell, ILevel } from './types';
 
+/**
+ * handles everything necessary for playing a single level.
+ */
 export default function useGameLoop(level: ILevel) {
 
   // Time in seconds remaining for the level
-  const [timer, setTimer] = useState(1800);
+  const [timer, setTimer] = useState(30 * 60);
   // Formatted (HH:)MM:SS `timer`
   const [formattedTimer, setFormattedTimer] = useState('30:00');
   // Current state of the game

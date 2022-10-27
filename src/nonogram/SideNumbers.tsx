@@ -7,6 +7,9 @@ interface IProps {
   level: ILevel
 }
 
+/**
+ * component that renders the numbers on the side of the board that describe which cells on the board to fill.
+ */
 function SideNumbers({level}: IProps) {
 
   let blockSize = 0;

@@ -5,6 +5,9 @@ interface IProps {
   level: ILevel
 }
 
+/**
+ * component that renders a preview of the board. All cells marked fille don the board are drawn as black rectangles on a white background.
+ */
 function Preview({level}: IProps) {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
