@@ -1,12 +1,14 @@
 import { CellCoords } from './types'
 
-// Changes field coords into convenient Map key
+/**
+ *  converts cell coordinates into convenient Map keys.
+ */
 export function coordsToKey([x, y]: CellCoords): string {
   return `[${x},${y}]`;
 }
 
 /**
- * Parses number of seconds to (HH:)MM:SS format
+ * parses number of seconds to (HH:)MM:SS format.
  */
 export function formatSeconds(secondsCount: number): string {
   let hours: number | string = Math.floor(secondsCount / 3600);

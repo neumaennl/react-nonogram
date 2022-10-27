@@ -11,6 +11,9 @@ interface IProps {
   onRemoveMark: (cell: ICell) => void;
 }
 
+/**
+ * component that renders a single cell of the playing field that the player can interact with.
+ */
 function Cell({cell, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
   const isDisabled = gameState === GameState.Pause || gameState === GameState.GameOver || gameState === GameState.Won;
 

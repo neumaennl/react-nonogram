@@ -11,6 +11,9 @@ interface IProps {
   onRemoveMark: (cell: ICell) => void;
 }
 
+/**
+ * component that renders the board of cells the player can interact with.
+ */
 function Board({gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
 
   return (

@@ -3,6 +3,11 @@ import { coordsToKey } from "./helper";
 import { getLevelInfo } from "./levels";
 import { CellMap, CellMark, ILevel } from "./types";
 
+/**
+ * loads/deserializes the level with the given name.
+ * @param levelName the name of the level to load
+ * @returns the level with the given name or a generic test level, if the level with the given name could not be loaded
+ */
 export default function useLevel(levelName: string): ILevel {
 
   const [cells, setCells] = useState<CellMap>(new Map());

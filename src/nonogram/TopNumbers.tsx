@@ -7,7 +7,10 @@ interface IProps {
   level: ILevel
 }
 
-function TopNumbers({level}: IProps) {
+/**
+ * component that renders the numbers on the top of the board that describe which cells on the board to fill.
+ */
+ function TopNumbers({level}: IProps) {
 
   let blockSize = 0;
   let blockCount = 0;
