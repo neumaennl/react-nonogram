@@ -4,7 +4,7 @@
 [![Tests](https://github.com/neumaennl/react-nonogram/workflows/Tests/badge.svg)](https://github.com/neumaennl/react-nonogram/actions/workflows/test.yml)
 [![GitHub license](https://img.shields.io/github/license/neumaennl/react-nonogram)](https://github.com/neumaennl/react-nonogram/blob/main/LICENSE)
 
-a nonogram game implemented in React with TypeScript
+a [nonogram](https://en.wikipedia.org/wiki/Nonogram) game implemented in React with TypeScript
 
 [Try it!](https://neumaennl.github.io/react-nonogram)
 
