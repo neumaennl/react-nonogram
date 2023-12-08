@@ -4,10 +4,6 @@
   "homepage": "https://neumaennl.github.io/react-nonogram",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^6.1.4",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/user-event": "^14.5.1",
-    "@types/jest": "^29.5.11",
     "@types/node": "^20.10.3",
     "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.15",
@@ -17,31 +13,34 @@
     "web-vitals": "^3.5.0"
   },
   "devDependencies": {
-    "react-scripts": "5.0.1"
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/jest": "^29.5.11",
+    "@vitejs/plugin-react": "^4.2.1",
+    "babel-jest": "^29.7.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-css-modules-transform": "^4.4.2",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "vite": "^5.0.6",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "scripts": {
     "predeploy": "npm run build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage .",
+    "test:debug": "jest --inspect-brk --runInBand --no-cache"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
   }
 }
