@@ -1,0 +1,10 @@
+{
+"preset": "ts-jest",
+"testEnvironment": "jsdom",
+"modulePaths": ["<rootDir>/src"],
+"moduleNameMapper": {
+  "\\.svg$": "GlobalImageStub",
+  "\\.css$": "identity-obj-proxy"
+},
+"setupFilesAfterEnv": ["<rootDir>/src/setupTests.ts"]
+}
