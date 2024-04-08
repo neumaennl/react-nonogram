@@ -6,7 +6,7 @@ interface IProps {
 }
 
 /**
- * component that renders a preview of the board. All cells marked fille don the board are drawn as black rectangles on a white background.
+ * component that renders a preview of the board. All cells marked filled on the board are drawn as black rectangles on a white background.
  */
 function Preview({level}: IProps) {
 
