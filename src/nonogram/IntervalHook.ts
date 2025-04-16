@@ -8,7 +8,7 @@ type IntervalCallback = () => void;
  * @param delay the delay between calls to `callback`
  */
 export default function useInterval(callback: IntervalCallback, delay: number | null) {
-  const savedCallback = useRef<IntervalCallback>();
+  const savedCallback = useRef<IntervalCallback>(callback);
 
   useEffect(() => {
     savedCallback.current = callback;
