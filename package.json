@@ -4,7 +4,7 @@
   "homepage": "https://neumaennl.github.io/react-nonogram",
   "private": true,
   "dependencies": {
-    "@types/node": "^22.15.19",
+    "@types/node": "^22.15.27",
     "@types/react": "^19.1.4",
     "@types/react-dom": "^19.1.5",
     "react": "^19.1.0",
