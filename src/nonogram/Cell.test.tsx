@@ -35,10 +35,10 @@ test("renders an unmarked cell", async () => {
   expect(button).toBeEmptyDOMElement();
 
   await user.pointer({keys: '[MouseLeft]', target: button});
-  expect(onMarkFilled).toBeCalledWith(cell);
+  expect(onMarkFilled).toHaveBeenCalledWith(cell);
   await user.pointer({keys: '[MouseRight]', target: button});
-  expect(onMarkEmpty).toBeCalledWith(cell);
-  expect(onRemoveMark).not.toBeCalled();
+  expect(onMarkEmpty).toHaveBeenCalledWith(cell);
+  expect(onRemoveMark).not.toHaveBeenCalled();
 });
 
 test("renders an empty cell", async () => {
@@ -76,10 +76,10 @@ test("renders an empty cell", async () => {
   expect(button.firstChild).toBeInstanceOf(SVGSVGElement);
 
   await user.pointer({keys: '[MouseLeft]', target: button});
-  expect(onMarkFilled).not.toBeCalled();
+  expect(onMarkFilled).not.toHaveBeenCalled();
   await user.pointer({keys: '[MouseRight]', target: button});
-  expect(onMarkEmpty).not.toBeCalled();
-  expect(onRemoveMark).toBeCalledWith(cell);
+  expect(onMarkEmpty).not.toHaveBeenCalled();
+  expect(onRemoveMark).toHaveBeenCalledWith(cell);
 });
 
 test("renders a filled cell", async () => {
@@ -114,10 +114,10 @@ test("renders a filled cell", async () => {
   expect(button).toBeEmptyDOMElement();
 
   await user.pointer({keys: '[MouseLeft]', target: button});
-  expect(onMarkFilled).not.toBeCalled();
+  expect(onMarkFilled).not.toHaveBeenCalled();
   await user.pointer({keys: '[MouseRight]', target: button});
-  expect(onMarkEmpty).not.toBeCalled();
-  expect(onRemoveMark).not.toBeCalled();
+  expect(onMarkEmpty).not.toHaveBeenCalled();
+  expect(onRemoveMark).not.toHaveBeenCalled();
 });
 
 test("renders a disabled cell", async () => {
@@ -150,8 +150,8 @@ test("renders a disabled cell", async () => {
   expect(button).toBeDisabled();
 
   await user.pointer({keys: '[MouseLeft]', target: button});
-  expect(onMarkFilled).not.toBeCalled();
+  expect(onMarkFilled).not.toHaveBeenCalled();
   await user.pointer({keys: '[MouseRight]', target: button});
-  expect(onMarkEmpty).not.toBeCalled();
-  expect(onRemoveMark).not.toBeCalled();
+  expect(onMarkEmpty).not.toHaveBeenCalled();
+  expect(onRemoveMark).not.toHaveBeenCalled();
 });
