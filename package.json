@@ -4,16 +4,16 @@
   "homepage": "https://neumaennl.github.io/react-nonogram",
   "private": true,
   "dependencies": {
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.3.0",
     "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@types/react-dom": "^19.1.7",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "typescript": "^5.8.3",
-    "web-vitals": "^5.0.3"
+    "react-dom": "^19.1.1",
+    "typescript": "^5.9.2",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
@@ -23,7 +23,7 @@
     "jest": "^30.0.5",
     "jest-css-modules-transform": "^4.4.2",
     "jest-environment-jsdom": "^30.0.5",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "vite": "^7.1.2",
     "vite-plugin-svgr": "^4.3.0"
   },
