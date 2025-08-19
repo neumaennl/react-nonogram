@@ -23,7 +23,7 @@
     "jest": "^30.0.5",
     "jest-css-modules-transform": "^4.4.2",
     "jest-environment-jsdom": "^30.0.5",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "vite": "^7.0.6",
     "vite-plugin-svgr": "^4.3.0"
   },
