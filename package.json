@@ -4,7 +4,7 @@
   "homepage": "https://neumaennl.github.io/react-nonogram",
   "private": true,
   "dependencies": {
-    "@types/node": "^24.5.0",
+    "@types/node": "^24.5.02,
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "react": "^19.1.0",
@@ -24,7 +24,7 @@
     "jest-css-modules-transform": "^4.4.2",
     "jest-environment-jsdom": "^30.1.2",
     "ts-jest": "^29.4.1",
-    "vite": "^7.1.5",
+    "vite": "^7.1.6",
     "vite-plugin-svgr": "^4.5.0"
   },
   "scripts": {
