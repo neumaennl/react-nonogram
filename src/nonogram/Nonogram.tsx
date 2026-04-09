@@ -1,4 +1,5 @@
 import Board from './Board';
+import React from 'react';
 import SideNumbers from './SideNumbers';
 import TopNumbers from './TopNumbers';
 import { GameState } from './types';
@@ -12,7 +13,7 @@ import Preview from './Preview';
  * component that renders the whole game: the preview, the numbers that describe which cells to fill on the board,
  * the board itself and the button descriptions.
  */
-export default function Nonogram() {
+export default function Nonogram(): React.ReactElement {
 
   const { level, onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState } = useGameEnvironment();
 

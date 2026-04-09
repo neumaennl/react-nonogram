@@ -6,7 +6,7 @@ import { CellMark, GameState, ICell, ILevel } from './types';
 /**
  * handles everything necessary for playing a single level.
  */
-export default function useGameLoop(level: ILevel) {
+export default function useGameLoop(level: ILevel): { onMarkFilled: (cell: ICell) => void; onMarkEmpty: (cell: ICell) => void; onRemoveMark: (cell: ICell) => void; formattedTimer: string; gameState: GameState } {
 
   // Time in seconds remaining for the level
   const [timer, setTimer] = useState(30 * 60);
