@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { vi } from 'vitest';
 import { CellMark, GameState, ICell, ILevel, CellMap } from '../nonogram/types';
 import Cell from './Cell'
 
@@ -19,9 +20,9 @@ test("renders an unmarked cell", async () => {
     setCellsFilled: () => {}
   }
 
-  const onMarkEmpty = jest.fn();
-  const onMarkFilled = jest.fn();
-  const onRemoveMark = jest.fn();
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
   const user = userEvent.setup();
 
   render(<Cell cell={cell} gameState={GameState.Playing} level={level}
@@ -57,9 +58,9 @@ test("renders an empty cell", async () => {
     setCellsFilled: () => {}
   }
 
-  const onMarkEmpty = jest.fn();
-  const onMarkFilled = jest.fn();
-  const onRemoveMark = jest.fn();
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
   const user = userEvent.setup();
 
   render(<Cell cell={cell} gameState={GameState.Playing} level={level}
@@ -72,7 +73,7 @@ test("renders an empty cell", async () => {
   expect(button.style.backgroundColor).toEqual("white");
   expect(button).not.toBeEmptyDOMElement();
   expect(button.childElementCount).toEqual(1);
-  // eslint-disable-next-line testing-library/no-node-access
+   
   expect(button.firstChild).toBeInstanceOf(SVGSVGElement);
 
   await user.pointer({keys: '[MouseLeft]', target: button});
@@ -98,9 +99,9 @@ test("renders a filled cell", async () => {
     setCellsFilled: () => {}
   }
 
-  const onMarkEmpty = jest.fn();
-  const onMarkFilled = jest.fn();
-  const onRemoveMark = jest.fn();
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
   const user = userEvent.setup();
 
   render(<Cell cell={cell} gameState={GameState.Playing} level={level}
@@ -136,9 +137,9 @@ test("renders a disabled cell", async () => {
     setCellsFilled: () => {}
   }
 
-  const onMarkEmpty = jest.fn();
-  const onMarkFilled = jest.fn();
-  const onRemoveMark = jest.fn();
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
   const user = userEvent.setup();
 
   render(<Cell cell={cell} gameState={GameState.GameOver} level={level}

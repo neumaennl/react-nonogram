@@ -10,15 +10,15 @@ interface IProps {
 /**
  * component that renders the numbers on the top of the board that describe which cells on the board to fill.
  */
- function TopNumbers({level}: IProps) {
+ function TopNumbers({level}: IProps): React.ReactElement {
 
   let blockSize = 0;
   let blockCount = 0;
 
-  let columns = new Array<Array<number>>();
+  const columns = new Array<Array<number>>();
 
   for (let x = 0; x < level.cols; x++) {
-    let numbers = new Array<number>();
+    const numbers = new Array<number>();
     columns.push(numbers);
     for (let y = level.rows - 1; y >= 0; y--) {
       if (level.cells.get(coordsToKey([x, y]))?.fill) {

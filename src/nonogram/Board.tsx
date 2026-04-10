@@ -14,7 +14,7 @@ interface IProps {
 /**
  * component that renders the board of cells the player can interact with.
  */
-function Board({gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps) {
+function Board({gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark}: IProps): React.ReactElement {
 
   return (
     <div className={styles.board} style={{ gridTemplateColumns: `repeat(${level.cols}, 1fr)` }}>

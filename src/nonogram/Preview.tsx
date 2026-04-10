@@ -8,7 +8,7 @@ interface IProps {
 /**
  * component that renders a preview of the board. All cells marked filled on the board are drawn as black rectangles on a white background.
  */
-function Preview({level}: IProps) {
+function Preview({level}: IProps): React.ReactElement {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -18,9 +18,9 @@ function Preview({level}: IProps) {
     const context = canvas?.getContext('2d');
     let animationFrameId: number;
 
-    const render = () => {
+    const render = (): void => {
       if(canvas) {
-        for(var cell of Array.from(level.cells.values())) {
+        for(const cell of Array.from(level.cells.values())) {
           if(cell.mark === CellMark.filled) {
             context?.fillRect(cell.coords[0] * level.cols, cell.coords[1] * level.rows, canvas.width / level.cols, canvas.height / level.rows);
           }
@@ -30,7 +30,7 @@ function Preview({level}: IProps) {
     }
     render()
 
-    return () => {
+    return (): void => {
       window.cancelAnimationFrame(animationFrameId)
     }
   }, [level]);

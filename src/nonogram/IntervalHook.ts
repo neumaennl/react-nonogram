@@ -7,7 +7,7 @@ type IntervalCallback = () => void;
  * @param callback the callback to call regularly
  * @param delay the delay between calls to `callback`
  */
-export default function useInterval(callback: IntervalCallback, delay: number | null) {
+export default function useInterval(callback: IntervalCallback, delay: number | null): void {
   const savedCallback = useRef<IntervalCallback>(callback);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export default function useInterval(callback: IntervalCallback, delay: number | 
   }, [callback]);
 
   useEffect(() => {
-    const tick = () => {
+    const tick = (): void => {
       if (savedCallback.current) {
         savedCallback.current();
       }
     };
     if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
+      const id = setInterval(tick, delay);
+      return (): void => clearInterval(id);
     }
   }, [delay]);
 }

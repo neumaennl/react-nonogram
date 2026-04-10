@@ -19,11 +19,9 @@ export default function useLevel(levelName: string): ILevel {
   const [cols, setCols] = useState(0);
 
   useEffect(() => {
-    let levelInfo = getLevelInfo(levelName);
+    const levelInfo = getLevelInfo(levelName);
     let tempDescripton = "";
     let error = false;
-    let x = 0;
-    let y = -1;
     let tempCells: CellMap = new Map();
     let tempRows = 0;
     let tempCols = 0;
@@ -32,7 +30,8 @@ export default function useLevel(levelName: string): ILevel {
 
     if (levelInfo) {
       tempDescripton = levelInfo.description;
-      let rowStrings = levelInfo.data.split("\n");
+      const rowStrings = levelInfo.data.split("\n");
+      let y = -1;
       for (const row of rowStrings) {
         y++;
         if (row.match(/^[0-4]+$/)) {
@@ -45,7 +44,7 @@ export default function useLevel(levelName: string): ILevel {
               break;
             }
           }
-          x = -1;
+          let x = -1;
           for (const col of row) {
             x++;
             switch (col) {
@@ -129,8 +128,8 @@ export default function useLevel(levelName: string): ILevel {
       tempCells = new Map();
       tempCellsToBeFilled = 0;
       tempCellsAlreadyFilled = 0;
-      for (y = 0; y < tempRows; y++) {
-        for (x = 0; x < tempCols; x++) {
+      for (let y = 0; y < tempRows; y++) {
+        for (let x = 0; x < tempCols; x++) {
           tempCells.set(coordsToKey([x, y]), { id: x + tempCols * y, coords: [x, y], fill: false, mark: CellMark.none });
         }
       }
