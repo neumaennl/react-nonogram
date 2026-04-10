@@ -10,19 +10,45 @@ interface IProps {
   onMarkFilled: (cell: LevelCellDefinition) => void;
   onMarkEmpty: (cell: LevelCellDefinition) => void;
   onRemoveMark: (cell: LevelCellDefinition) => void;
+  isTouchDevice: boolean;
+  touchMarkMode: 'fill' | 'mark';
 }
 
 /**
  * component that renders a single cell of the playing field that the player can interact with.
  */
-function Cell({ cell, gameState, level, mark, onMarkFilled, onMarkEmpty, onRemoveMark }: IProps): React.ReactElement {
+function Cell({
+  cell,
+  gameState,
+  level,
+  mark,
+  onMarkFilled,
+  onMarkEmpty,
+  onRemoveMark,
+  isTouchDevice,
+  touchMarkMode,
+}: IProps): React.ReactElement {
   const isDisabled = gameState === GameState.Pause || gameState === GameState.GameOver || gameState === GameState.Won;
 
   const handleClick = useCallback((): void => {
+    if (isTouchDevice) {
+      if (touchMarkMode === 'fill' && mark === CellMark.none) {
+        onMarkFilled(cell);
+      }
+      if (touchMarkMode === 'mark' && mark !== CellMark.filled) {
+        if (mark === CellMark.empty) {
+          onRemoveMark(cell);
+        } else {
+          onMarkEmpty(cell);
+        }
+      }
+      return;
+    }
+
     if (mark === CellMark.none) {
       onMarkFilled(cell);
     }
-  }, [cell, mark, onMarkFilled]);
+  }, [cell, isTouchDevice, mark, onMarkEmpty, onMarkFilled, onRemoveMark, touchMarkMode]);
 
   const handleContextMenuClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {

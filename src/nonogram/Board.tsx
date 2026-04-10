@@ -11,12 +11,23 @@ interface IProps {
   onMarkFilled: (cell: LevelCellDefinition) => void;
   onMarkEmpty: (cell: LevelCellDefinition) => void;
   onRemoveMark: (cell: LevelCellDefinition) => void;
+  isTouchDevice: boolean;
+  touchMarkMode: 'fill' | 'mark';
 }
 
 /**
  * component that renders the board of cells the player can interact with.
  */
-function Board({ board, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMark }: IProps): React.ReactElement {
+function Board({
+  board,
+  gameState,
+  level,
+  onMarkFilled,
+  onMarkEmpty,
+  onRemoveMark,
+  isTouchDevice,
+  touchMarkMode,
+}: IProps): React.ReactElement {
   return (
     <div className={styles.board} style={{ gridTemplateColumns: `repeat(${level.cols}, 1fr)` }}>
       {Array.from(level.cells.values()).map((cell) => (
@@ -29,6 +40,8 @@ function Board({ board, gameState, level, onMarkFilled, onMarkEmpty, onRemoveMar
           onMarkFilled={onMarkFilled}
           onMarkEmpty={onMarkEmpty}
           onRemoveMark={onRemoveMark}
+          isTouchDevice={isTouchDevice}
+          touchMarkMode={touchMarkMode}
         />
       ))}
     </div>

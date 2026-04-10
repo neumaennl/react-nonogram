@@ -1,20 +1,48 @@
 .nonogram {
   background-color: gray;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.game {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.game {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+.gameShell {
+  display: contents;
+}
+
+.titlePanel {
+  text-align: center;
+}
+
+.titlePanel h1 {
+  margin: 0;
+  font-size: clamp(1.45rem, 1.2rem + 1.3vw, 2.6rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #1f1f1f;
+  text-wrap: balance;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .container {
+  width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-template-rows: 1fr 2fr;
@@ -42,14 +70,66 @@
   text-align: center;
   width: 100%;
   flex: 0.5 0.5 auto;
+  font-size: clamp(1rem, 0.4rem + 2.4vmin, 2.2rem);
+  font-weight: 700;
 }
 
-.buttons {
+.helpPanel {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+
+.helpContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.helpContent p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+
+.helpContent svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.touchHelpText {
+  width: 100%;
+  justify-content: center;
+}
+
+.touchControls {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.touchModeButton {
+  border: 1px solid #4f4f4f;
+  border-radius: 999px;
+  background: #efefef;
+  color: #1a1a1a;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.touchModeButtonActive {
+  background: #1d1d1d;
+  color: #f8f8f8;
+  border-color: #1d1d1d;
 }
 
 .message {
@@ -62,4 +142,53 @@
   border-radius: 2vmin;
   padding: 2vmin;
   font-size: xx-large;
+}
+
+@media (orientation: landscape) {
+  .nonogram {
+    display: grid;
+    /* left col: board (auto-sized to content), right col: title+help */
+    grid-template-columns: auto minmax(14rem, 24vw);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "board title"
+      "board help";
+    justify-content: center;
+    align-items: center;
+    gap: 0 1rem;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  /* gameShell stops being display:contents so it can occupy grid-area board */
+  .gameShell {
+    display: flex;
+    grid-area: board;
+    align-self: center;
+  }
+
+  .titlePanel {
+    grid-area: title;
+    text-align: left;
+    align-self: end;
+    max-width: min(24vw, 20rem);
+  }
+
+  .titlePanel h1 {
+    font-size: clamp(1.3rem, 0.8rem + 1.4vw, 2.2rem);
+  }
+
+  .helpPanel {
+    grid-area: help;
+    justify-content: flex-start;
+    align-self: start;
+    margin-top: 0.35rem;
+  }
+
+  .helpContent {
+    justify-content: flex-start;
+  }
 }

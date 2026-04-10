@@ -36,6 +36,8 @@ test('renders an unmarked cell', async () => {
       onMarkEmpty={onMarkEmpty}
       onMarkFilled={onMarkFilled}
       onRemoveMark={onRemoveMark}
+      isTouchDevice={false}
+      touchMarkMode='fill'
     />,
   );
 
@@ -71,6 +73,8 @@ test('renders an empty cell', async () => {
       onMarkEmpty={onMarkEmpty}
       onMarkFilled={onMarkFilled}
       onRemoveMark={onRemoveMark}
+      isTouchDevice={false}
+      touchMarkMode='fill'
     />,
   );
 
@@ -109,6 +113,8 @@ test('renders a filled cell', async () => {
       onMarkEmpty={onMarkEmpty}
       onMarkFilled={onMarkFilled}
       onRemoveMark={onRemoveMark}
+      isTouchDevice={false}
+      touchMarkMode='fill'
     />,
   );
 
@@ -144,6 +150,8 @@ test('renders a disabled cell', async () => {
       onMarkEmpty={onMarkEmpty}
       onMarkFilled={onMarkFilled}
       onRemoveMark={onRemoveMark}
+      isTouchDevice={false}
+      touchMarkMode='fill'
     />,
   );
 
@@ -157,4 +165,81 @@ test('renders a disabled cell', async () => {
   await user.pointer({ keys: '[MouseRight]', target: button });
   expect(onMarkEmpty).not.toHaveBeenCalled();
   expect(onRemoveMark).not.toHaveBeenCalled();
+});
+
+test('touch fill mode marks an unmarked cell as filled', async () => {
+  const cell: LevelCellDefinition = { id: 0, coords: [0, 0], initialMark: CellMark.none, fill: true };
+  const level = createLevel(cell);
+
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
+  const user = userEvent.setup();
+
+  render(
+    <Cell
+      cell={cell}
+      gameState={GameState.Playing}
+      level={level}
+      mark={CellMark.none}
+      onMarkEmpty={onMarkEmpty}
+      onMarkFilled={onMarkFilled}
+      onRemoveMark={onRemoveMark}
+      isTouchDevice={true}
+      touchMarkMode='fill'
+    />,
+  );
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+
+  expect(onMarkFilled).toHaveBeenCalledWith(cell);
+  expect(onMarkEmpty).not.toHaveBeenCalled();
+  expect(onRemoveMark).not.toHaveBeenCalled();
+});
+
+test('touch mark mode toggles none to empty and empty to none', async () => {
+  const cell: LevelCellDefinition = { id: 0, coords: [0, 0], initialMark: CellMark.none, fill: true };
+  const level = createLevel(cell);
+
+  const onMarkEmpty = vi.fn();
+  const onMarkFilled = vi.fn();
+  const onRemoveMark = vi.fn();
+  const user = userEvent.setup();
+
+  const { rerender } = render(
+    <Cell
+      cell={cell}
+      gameState={GameState.Playing}
+      level={level}
+      mark={CellMark.none}
+      onMarkEmpty={onMarkEmpty}
+      onMarkFilled={onMarkFilled}
+      onRemoveMark={onRemoveMark}
+      isTouchDevice={true}
+      touchMarkMode='mark'
+    />,
+  );
+
+  const button = screen.getByRole('button');
+  await user.click(button);
+  expect(onMarkEmpty).toHaveBeenCalledWith(cell);
+
+  rerender(
+    <Cell
+      cell={cell}
+      gameState={GameState.Playing}
+      level={level}
+      mark={CellMark.empty}
+      onMarkEmpty={onMarkEmpty}
+      onMarkFilled={onMarkFilled}
+      onRemoveMark={onRemoveMark}
+      isTouchDevice={true}
+      touchMarkMode='mark'
+    />,
+  );
+
+  await user.click(screen.getByRole('button'));
+  expect(onRemoveMark).toHaveBeenCalledWith(cell);
+  expect(onMarkFilled).not.toHaveBeenCalled();
 });
