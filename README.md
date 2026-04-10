@@ -9,7 +9,6 @@ a [nonogram](https://en.wikipedia.org/wiki/Nonogram) game implemented in React w
 [Try it!](https://neumaennl.github.io/react-nonogram)
 
 ## stuff left to do
-- preview
 - level selection
 - pausing
 - quitting
