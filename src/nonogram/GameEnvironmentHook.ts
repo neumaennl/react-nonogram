@@ -1,19 +1,25 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useGameLoop from './GameLoopHook';
 import useLevel from './LevelLoader';
 import { getLevelNames } from './levels';
-import { ILevel, ICell, GameState } from './types';
+import { GameEnvironmentResult } from './types';
 
 /**
  * handles the game environment (e.g. current level).
  */
-export default function useGameEnvironment(): { level: ILevel; onMarkFilled: (cell: ICell) => void; onMarkEmpty: (cell: ICell) => void; onRemoveMark: (cell: ICell) => void; formattedTimer: string; gameState: GameState } {
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [levelName, setLevelName] = useState(getLevelNames()[0]);
+export default function useGameEnvironment(): GameEnvironmentResult {
+  const levelNames = useMemo(() => getLevelNames(), []);
+  const [levelName, setLevelName] = useState(levelNames[0]);
   const level = useLevel(levelName);
-  const { onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState } = useGameLoop(level);
+  const gameLoop = useGameLoop(level);
 
-  return { level, onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState };
-
+  return {
+    environment: {
+      levelName,
+      levelNames,
+    },
+    level,
+    selectLevel: setLevelName,
+    ...gameLoop,
+  };
 }

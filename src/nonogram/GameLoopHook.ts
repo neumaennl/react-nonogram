@@ -1,87 +1,256 @@
-import { useCallback, useEffect, useState } from 'react';
-import { formatSeconds } from './helper';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { coordsToKey, formatSeconds } from './helper';
 import useInterval from './IntervalHook';
-import { CellMark, GameState, ICell, ILevel } from './types';
+import {
+  CellMark,
+  CellMarkMap,
+  GameBoardState,
+  GameLoopResult,
+  GameState,
+  LevelCellDefinition,
+  LevelDefinition,
+} from './types';
+
+const INITIAL_TIMER_SECONDS = 30 * 60;
+const WRONG_MARK_PENALTY_SECONDS = 120;
+
+interface GameLoopState {
+  board: GameBoardState;
+  timer: number;
+  gameState: GameState;
+}
+
+type GameLoopAction =
+  | { type: 'level-changed'; level: LevelDefinition }
+  | { type: 'restart'; level: LevelDefinition }
+  | { type: 'tick'; level: LevelDefinition }
+  | { type: 'mark-filled'; level: LevelDefinition; cell: LevelCellDefinition }
+  | { type: 'mark-empty'; level: LevelDefinition; cell: LevelCellDefinition }
+  | { type: 'remove-mark'; level: LevelDefinition; cell: LevelCellDefinition }
+  | { type: 'pause' }
+  | { type: 'resume' };
+
+function createInitialBoardState(level: LevelDefinition): GameBoardState {
+  const marks: CellMarkMap = new Map();
+  let cellsFilled = 0;
+
+  for (const [cellKey, cell] of level.cells.entries()) {
+    marks.set(cellKey, cell.initialMark);
+    if (cell.fill && cell.initialMark === CellMark.filled) {
+      cellsFilled += 1;
+    }
+  }
+
+  return { marks, cellsFilled };
+}
+
+function createInitialGameLoopState(level: LevelDefinition): GameLoopState {
+  return {
+    board: createInitialBoardState(level),
+    timer: INITIAL_TIMER_SECONDS,
+    gameState: GameState.Idle,
+  };
+}
+
+function isInteractiveGameState(gameState: GameState): boolean {
+  return gameState === GameState.Idle || gameState === GameState.Playing;
+}
+
+function finalizeState(
+  level: LevelDefinition,
+  board: GameBoardState,
+  timer: number,
+  gameState: GameState,
+): GameLoopState {
+  const nextTimer = Math.max(timer, 0);
+
+  if (nextTimer === 0) {
+    return {
+      board,
+      timer: nextTimer,
+      gameState: GameState.GameOver,
+    };
+  }
+
+  if (gameState === GameState.Playing && board.cellsFilled === level.cellsToBeFilled) {
+    return {
+      board,
+      timer: nextTimer,
+      gameState: GameState.Won,
+    };
+  }
+
+  return {
+    board,
+    timer: nextTimer,
+    gameState,
+  };
+}
+
+function updateBoardMark(
+  level: LevelDefinition,
+  state: GameLoopState,
+  cell: LevelCellDefinition,
+  nextMark: CellMark,
+  timerDelta = 0,
+): GameLoopState {
+  const cellKey = coordsToKey(cell.coords);
+  const currentMark = state.board.marks.get(cellKey) ?? cell.initialMark;
+  const marks = new Map(state.board.marks);
+  let cellsFilled = state.board.cellsFilled;
+
+  if (cell.fill && currentMark !== CellMark.filled && nextMark === CellMark.filled) {
+    cellsFilled += 1;
+  }
+
+  marks.set(cellKey, nextMark);
+
+  return finalizeState(
+    level,
+    { marks, cellsFilled },
+    state.timer + timerDelta,
+    state.gameState === GameState.Idle ? GameState.Playing : state.gameState,
+  );
+}
+
+function gameLoopReducer(state: GameLoopState, action: GameLoopAction): GameLoopState {
+  switch (action.type) {
+    case 'level-changed':
+    case 'restart':
+      return createInitialGameLoopState(action.level);
+    case 'tick':
+      if (state.gameState !== GameState.Playing) {
+        return state;
+      }
+      return finalizeState(action.level, state.board, state.timer - 1, GameState.Playing);
+    case 'mark-filled': {
+      if (!isInteractiveGameState(state.gameState)) {
+        return state;
+      }
+
+      const currentMark = state.board.marks.get(coordsToKey(action.cell.coords)) ?? action.cell.initialMark;
+      if (currentMark !== CellMark.none) {
+        return state;
+      }
+
+      if (action.cell.fill) {
+        return updateBoardMark(action.level, state, action.cell, CellMark.filled);
+      }
+
+      return updateBoardMark(
+        action.level,
+        state,
+        action.cell,
+        CellMark.empty,
+        -WRONG_MARK_PENALTY_SECONDS, // TODO: dynamic penalty?
+      );
+    }
+    case 'mark-empty': {
+      if (!isInteractiveGameState(state.gameState)) {
+        return state;
+      }
+
+      const currentMark = state.board.marks.get(coordsToKey(action.cell.coords)) ?? action.cell.initialMark;
+      if (currentMark === CellMark.filled) {
+        return state;
+      }
+
+      return updateBoardMark(action.level, state, action.cell, CellMark.empty);
+    }
+    case 'remove-mark': {
+      if (!isInteractiveGameState(state.gameState)) {
+        return state;
+      }
+
+      const currentMark = state.board.marks.get(coordsToKey(action.cell.coords)) ?? action.cell.initialMark;
+      if (currentMark === CellMark.filled) {
+        return state;
+      }
+
+      return updateBoardMark(action.level, state, action.cell, CellMark.none);
+    }
+    case 'pause':
+      if (state.gameState !== GameState.Playing) {
+        return state;
+      }
+      return { ...state, gameState: GameState.Pause };
+    case 'resume':
+      if (state.gameState !== GameState.Pause) {
+        return state;
+      }
+      return { ...state, gameState: GameState.Playing };
+    default:
+      return state;
+  }
+}
 
 /**
  * handles everything necessary for playing a single level.
  */
-export default function useGameLoop(level: ILevel): { onMarkFilled: (cell: ICell) => void; onMarkEmpty: (cell: ICell) => void; onRemoveMark: (cell: ICell) => void; formattedTimer: string; gameState: GameState } {
+export default function useGameLoop(level: LevelDefinition): GameLoopResult {
+  const [state, dispatch] = useReducer(gameLoopReducer, level, createInitialGameLoopState);
 
-  // Time in seconds remaining for the level
-  const [timer, setTimer] = useState(30 * 60);
-  // Formatted (HH:)MM:SS `timer`
-  const [formattedTimer, setFormattedTimer] = useState('30:00');
-  // Current state of the game
-  const [gameState, setGameState] = useState(GameState.Idle);
+  useEffect(() => {
+    dispatch({ type: 'level-changed', level });
+  }, [level]);
 
-  // Run `setInterval` every time when `gameState` is GameState.Playing
   useInterval(
     () => {
-      setTimer(timer - 1);
+      dispatch({ type: 'tick', level });
     },
-    gameState === GameState.Playing ? 1000 : null,
+    state.gameState === GameState.Playing ? 1000 : null,
   );
-
-  // Format seconds on each `timer` change and check if timer ran out
-  useEffect(() => {
-    setFormattedTimer(formatSeconds(timer));
-    if (timer <= 0) {
-      setTimer(0);
-      setGameState(GameState.GameOver);
-    }
-  }, [timer]);
-
-  // Check game win state
-  useEffect(() => {
-    if (gameState === GameState.Playing && level.cellsFilled === level.cellsToBeFilled) {
-      setGameState(GameState.Won);
-    }
-  }, [gameState, level.cellsFilled, level.cellsToBeFilled]);
 
   const onMarkFilled = useCallback(
-    (clickedCell: ICell): void => {
-      if (gameState === GameState.Playing || gameState === GameState.Idle) {
-        if (gameState === GameState.Idle) {
-          setGameState(GameState.Playing)
-        }
-        if (clickedCell.fill) {
-          clickedCell.mark = CellMark.filled;
-          level.setCells(new Map(level.cells));
-          level.setCellsFilled(level.cellsFilled + 1)
-        } else {
-          //TODO: dynamic penalty?
-          setTimer(timer - 120);
-          clickedCell.mark = CellMark.empty;
-          level.setCells(new Map(level.cells));
-        }
-      }
-    }, [level, timer, gameState]
-  );
-
-  const onRemoveMark = useCallback(
-    (clickedCell: ICell): void => {
-      if (gameState === GameState.Playing || gameState === GameState.Idle) {
-        if (gameState === GameState.Idle) {
-          setGameState(GameState.Playing)
-        }
-        clickedCell.mark = CellMark.none;
-        level.setCells(new Map(level.cells));
-      }
-    }, [level, gameState]
+    (cell: LevelCellDefinition): void => {
+      dispatch({ type: 'mark-filled', level, cell });
+    },
+    [level],
   );
 
   const onMarkEmpty = useCallback(
-    (clickedCell: ICell): void => {
-      if (gameState === GameState.Playing || gameState === GameState.Idle) {
-        if (gameState === GameState.Idle) {
-          setGameState(GameState.Playing)
-        }
-        clickedCell.mark = CellMark.empty;
-        level.setCells(new Map(level.cells));
-      }
-    }, [level, gameState]
+    (cell: LevelCellDefinition): void => {
+      dispatch({ type: 'mark-empty', level, cell });
+    },
+    [level],
   );
 
-  return { onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState };
+  const onRemoveMark = useCallback(
+    (cell: LevelCellDefinition): void => {
+      dispatch({ type: 'remove-mark', level, cell });
+    },
+    [level],
+  );
+
+  const pause = useCallback((): void => {
+    dispatch({ type: 'pause' });
+  }, []);
+
+  const resume = useCallback((): void => {
+    dispatch({ type: 'resume' });
+  }, []);
+
+  const restart = useCallback((): void => {
+    dispatch({ type: 'restart', level });
+  }, [level]);
+
+  const session = useMemo(
+    () => ({
+      timer: state.timer,
+      formattedTimer: formatSeconds(state.timer),
+      gameState: state.gameState,
+    }),
+    [state.gameState, state.timer],
+  );
+
+  return {
+    board: state.board,
+    session,
+    onMarkFilled,
+    onMarkEmpty,
+    onRemoveMark,
+    pause,
+    resume,
+    restart,
+  };
 }

@@ -25,14 +25,23 @@
 
 .previewAndTimer {
   grid-area: previewAndTimer;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.previewAndTimer canvas {
+  margin: 0 auto;
+}
+
 .timer {
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100%;
+  flex: 0.5 0.5 auto;
 }
 
 .buttons {
