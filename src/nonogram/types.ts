@@ -8,33 +8,94 @@
 export type CellCoords = [number, number];
 
 /**
- * the map containing all cells in the board.
+ * the key used to address a cell in a map.
  */
-export type CellMap = Map<string, ICell>;
+export type CellKey = string;
 
 /**
- * a cell on the board.
+ * immutable information about a cell defined by the level data.
  */
-export interface ICell {
+export interface LevelCellDefinition {
   id: number;
   coords: CellCoords;
   fill: boolean;
-  mark: CellMark;
+  initialMark: CellMark;
 }
 
 /**
- * represents the level currently being played.
+ * the map containing all cells defined by a level.
  */
-export interface ILevel {
+export type LevelCellMap = Map<CellKey, LevelCellDefinition>;
+
+/**
+ * the mutable marks currently shown on the board.
+ */
+export type CellMarkMap = Map<CellKey, CellMark>;
+
+/**
+ * immutable information that describes a level.
+ */
+export interface LevelDefinition {
   levelName: string;
   description: string;
-  cells: CellMap;
+  cells: LevelCellMap;
   cellsToBeFilled: number;
-  cellsFilled: number;
   rows: number;
   cols: number;
-  setCells(cells: CellMap): void;
-  setCellsFilled(cellsFilled: number): void;
+}
+
+/**
+ * mutable board state for an active game session.
+ */
+export interface GameBoardState {
+  marks: CellMarkMap;
+  cellsFilled: number;
+}
+
+/**
+ * mutable game-session state.
+ */
+export interface GameSessionState {
+  timer: number;
+  formattedTimer: string;
+  gameState: GameState;
+}
+
+/**
+ * environment-level state shared across game sessions.
+ */
+export interface EnvironmentState {
+  levelName: string;
+  levelNames: string[];
+}
+
+/**
+ * reusable cell action handlers.
+ */
+export interface GameCellActions {
+  onMarkFilled(cell: LevelCellDefinition): void;
+  onMarkEmpty(cell: LevelCellDefinition): void;
+  onRemoveMark(cell: LevelCellDefinition): void;
+}
+
+/**
+ * public result of the game loop hook.
+ */
+export interface GameLoopResult extends GameCellActions {
+  board: GameBoardState;
+  session: GameSessionState;
+  pause(): void;
+  resume(): void;
+  restart(): void;
+}
+
+/**
+ * public result of the environment hook.
+ */
+export interface GameEnvironmentResult extends GameLoopResult {
+  environment: EnvironmentState;
+  level: LevelDefinition;
+  selectLevel(levelName: string): void;
 }
 
 /**

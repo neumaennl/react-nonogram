@@ -14,8 +14,7 @@ import Preview from './Preview';
  * the board itself and the button descriptions.
  */
 export default function Nonogram(): React.ReactElement {
-
-  const { level, onMarkFilled, onMarkEmpty, onRemoveMark, formattedTimer, gameState } = useGameEnvironment();
+  const { board, level, onMarkFilled, onMarkEmpty, onRemoveMark, session } = useGameEnvironment();
 
   return (
     <div className={styles.nonogram}>
@@ -23,15 +22,16 @@ export default function Nonogram(): React.ReactElement {
       <div className={styles.game}>
         <div className={styles.container}>
           <div className={styles.previewAndTimer}>
-            <Preview level={level} />
+            <Preview board={board} level={level} />
             <div className={styles.timer}>
-              {formattedTimer}
+              {session.formattedTimer}
             </div>
           </div>
           <TopNumbers level={level} />
           <SideNumbers level={level} />
           <Board
-            gameState={gameState}
+            board={board}
+            gameState={session.gameState}
             level={level}
             onMarkEmpty={onMarkEmpty}
             onMarkFilled={onMarkFilled}
@@ -48,10 +48,10 @@ export default function Nonogram(): React.ReactElement {
             <span>Mark tile as 'must not be colored'</span>
           </p>
         </div>
-        {gameState === GameState.Won &&
+        {session.gameState === GameState.Won &&
           <div className={styles.message}>{level.description}</div>
         }
-        {gameState === GameState.GameOver &&
+        {session.gameState === GameState.GameOver &&
           <div className={styles.message}>You ran out of time.</div>
         }
       </div>

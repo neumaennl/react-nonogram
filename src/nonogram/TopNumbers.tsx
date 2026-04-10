@@ -1,17 +1,16 @@
 import React from 'react';
 import styles from './TopNumbers.module.css';
-import { ILevel } from './types';
+import { LevelDefinition } from './types';
 import { coordsToKey } from './helper'
 
 interface IProps {
-  level: ILevel
+  level: LevelDefinition
 }
 
 /**
  * component that renders the numbers on the top of the board that describe which cells on the board to fill.
  */
- function TopNumbers({level}: IProps): React.ReactElement {
-
+ function TopNumbers({ level }: IProps): React.ReactElement {
   let blockSize = 0;
   let blockCount = 0;
 
