@@ -3,6 +3,7 @@ import { coordsToKey, formatSeconds } from './helper';
 import useInterval from './IntervalHook';
 import {
   CellMark,
+  CellMarkMap,
   GameBoardState,
   GameLoopResult,
   GameState,
@@ -30,7 +31,7 @@ type GameLoopAction =
   | { type: 'resume' };
 
 function createInitialBoardState(level: LevelDefinition): GameBoardState {
-  const marks = new Map();
+  const marks: CellMarkMap = new Map();
   let cellsFilled = 0;
 
   for (const [cellKey, cell] of level.cells.entries()) {
@@ -98,9 +99,6 @@ function updateBoardMark(
   const marks = new Map(state.board.marks);
   let cellsFilled = state.board.cellsFilled;
 
-  if (cell.fill && currentMark === CellMark.filled && nextMark !== CellMark.filled) {
-    cellsFilled -= 1;
-  }
   if (cell.fill && currentMark !== CellMark.filled && nextMark === CellMark.filled) {
     cellsFilled += 1;
   }
@@ -144,7 +142,7 @@ function gameLoopReducer(state: GameLoopState, action: GameLoopAction): GameLoop
         state,
         action.cell,
         CellMark.empty,
-        -WRONG_MARK_PENALTY_SECONDS,
+        -WRONG_MARK_PENALTY_SECONDS, // TODO: dynamic penalty?
       );
     }
     case 'mark-empty': {
