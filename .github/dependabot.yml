@@ -10,6 +10,12 @@ updates:
     schedule:
       interval: "daily"
     groups:
+      eslint-dependencies:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint-community/*"
+          - "@typescript-eslint/*"
       vitest:
         patterns:
           - "vitest"
