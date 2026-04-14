@@ -15,6 +15,7 @@ updates:
           - "eslint"
           - "eslint-*"
           - "@eslint-community/*"
+          - "typescript-eslint"
           - "@typescript-eslint/*"
       vitest:
         patterns:
