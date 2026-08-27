@@ -21,7 +21,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.6",
     "@vitest/eslint-plugin": "^1.6.27",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "^4.1.11",
     "@vitejs/plugin-react": "^6.0.5",
     "eslint": "^10.9.0",
     "globals": "^17.11.0",
